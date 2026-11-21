@@ -1,6 +1,7 @@
 {
   "base": null,
   "exit_code": 1,
+  "files_indexed": 13,
   "files_scanned": 12,
   "files_skipped": {
     "skipped-oversize": 1

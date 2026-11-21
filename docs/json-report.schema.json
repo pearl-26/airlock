@@ -6,6 +6,7 @@
   "required": [
     "base",
     "exit_code",
+    "files_indexed",
     "files_scanned",
     "files_skipped",
     "findings",
@@ -23,6 +24,10 @@
     "exit_code": {
       "type": "integer",
       "enum": [0, 1, 2, 3]
+    },
+    "files_indexed": {
+      "type": "integer",
+      "minimum": 0
     },
     "files_scanned": {
       "type": "integer",

@@ -188,6 +188,7 @@ def test_jsonout_to_dict_matches_schema_and_sorts_keys() -> None:
         mode=Mode.FULL,
         repo_head="HEAD",
         base=None,
+        files_indexed=1,
         files_scanned=1,
         files_skipped={},
         findings=(dummy_finding,),
