@@ -1,6 +1,6 @@
 # ROADMAP: Airlock
 
-Last updated: 2026-11-19 20:05 UTC
+Last updated: 2026-11-21 01:21 UTC
 
 Roadmap version: 1
 
@@ -43,7 +43,7 @@ The repository is 100% ready when every task in Phases 0 to 8 is done and every 
 | 6 | Stellar detectors | 0 | 5 | 0% |
 | 7 | Hardening and edge cases | 4 | 13 | 31% |
 | 8 | Release v0.2.0 and community | 2 | 6 | 33% |
-| 9 (backlog) | Backlog | 15 | 28 | 54% |
+| 9 (backlog) | Backlog | 19 | 32 | 59% |
 | **Phases 0 to 8** | **Readiness total** | **46** | **95** | **48%** |
 | Gates | G1 to G10 | 0 | 10 | 0% |
 <!-- PROGRESS:END -->
@@ -303,6 +303,10 @@ families.
 - [x] **9.26** Reconcile `cfg-long-line` severity documentation in README with engine behavior (HIGH in build configs, WARN elsewhere) (#28).
 - [x] **9.27** Drop phantom `cfg-nul` from detector tables in `ARCHITECTURE_ESSENTIALS.md` and `PRD.md`, noting `nul-in-text` state finding (#56).
 - [x] **9.28** Reconcile test counts in `README.md` metrics and prose with `sync_readme.py` and badge data (#97).
+- [x] **9.29** Stop suppression note promising JSON output that was not written, naming `--format json` or reporting count alone (#64).
+- [x] **9.30** List suppressed fingerprints and reasons in the step summary after HIGH findings, escaping markup with `inline` (#66).
+- [x] **9.31** Version the JSON report (`SCHEMA_VERSION = 1`) and validate output and golden fixtures against a checked-in JSON schema with standard-library validator (#69).
+- [x] **9.32** Run the pr-mode trusted-base path against a two-commit fixture and add `.github/workflows/pr-mode.yml` (#77).
 
 ## 6. Dependency map (critical path)
 
@@ -347,6 +351,7 @@ Newest first. One row per merged change.
 
 | Date (UTC) | Change | Tasks |
 |---|---|---|
+| 2026-11-21 01:21 | Close #64, #66, #69 and #77. Correct GitHub suppression notice to cite `--format json` rather than claiming a JSON file was written (`tests/unit/test_github_suppressed_note.py`). Render suppressed findings table with escaped reasons, fingerprints, and locations in step summary after HIGH findings (`tests/unit/test_summary_suppressed.py`). Add `SCHEMA_VERSION = 1` to JSON report with `docs/json-report.schema.json`, golden fixture `tests/golden/report-v1.json`, and stdlib-only schema validator in `tests/unit/test_json_schema.py`. Add two-commit PR mode fixture `tests/fixtures/pr_mode.py`, verification test `tests/unit/test_workflow_pr_mode.py`, and workflow `.github/workflows/pr-mode.yml`. | 9.29, 9.30, 9.31, 9.32 |
 | 2026-11-19 20:05 | Close #28, #56 and #97. Document `cfg-long-line` dual severity in `README.md` (HIGH in build configs, WARN elsewhere) with `tests/unit/test_long_line_severity_docs.py`. Drop phantom rule id `cfg-nul` from `ARCHITECTURE_ESSENTIALS.md` and `PRD.md`, noting `nul-in-text` as the collector's state finding, with `tests/unit/test_rule_doc_ids.py` asserting table agreement with loaded `cfg-*` rule data. Update `scripts/sync_readme.py` to parse collected and skipped tests without magic thresholds, sync `README.md` prose test count with the metrics block, and verify three-way agreement in `tests/unit/test_readme_counts.py`. | 9.26, 9.27, 9.28 |
 | 2026-11-19 18:55 | Close #47, #48, #50 and #54. `strkey.py` decodes a candidate only when it is 56 canonical uppercase Base32 characters that re-encode to themselves, 35 bytes, version `0x90` and a matching little-endian CRC16-XMODEM over the first 33 bytes, and the new `stellar_seed` detector reports each valid candidate on a line at or under `line_cap` as the suppressible HIGH `stellar-seed` rule with both fixture halves; the checksum says nothing about funding or live use. Two engine tests close the trust-model gaps: `test_state_rule_ids.py` derives every `_state` producer from `collector.py` and `policy.py` with `ast`, resolves module-level constants, adds `detector-error` and `cfg-long-line`, and asserts set equality with a self-test that names a removed id and its file, while `test_policy_trusted_source_only.py` traps `policy._working_text` and proves `pr` and `push` never reach it, with `full` mode as the control that makes the trap bite. `cfg-network` no longer treats every `https://` literal as a capability: the trailing branch now requires a call argument or a network-named key, so a documentation URL in a comment is quiet while `fetch(`, `require("https")`, `axios` and `.request(` are unchanged, and `PRD.md` row 174 moves with the pattern. | 9.18, 9.19, 9.20, 9.21, 6.2, 6.3 |
 | 2026-11-19 18:25 | Merge pull request #111: Bounded install-hook pairing in `ci_surface.py`, npm lockfile registry host checks, manifest matching for LFS oids, and Cargo dependency-source findings. Add focused fixtures and tests. | 9.14, 9.15, 9.16, 9.17, FR-18, FR-20, FR-30, FR-31, ADR-020, ADR-021, D-10, D-11 |

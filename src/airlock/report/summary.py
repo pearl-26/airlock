@@ -110,10 +110,28 @@ def evidence_blocks(findings: tuple[Finding, ...]) -> list[str]:
     return lines
 
 
+def suppressed_section(report: ScanReport) -> list[str]:
+    """The suppressed findings table or empty declaration."""
+    if not report.suppressed:
+        return ["No finding was suppressed."]
+    rows = [
+        f"| {inline(finding.rule_id)} | {location(finding)} | {inline(finding.fingerprint)}"
+        f" | {inline(finding.suppressed_by or '')} |"
+        for finding in report.suppressed
+    ]
+    return [
+        "These are suppressed and not findings.",
+        "",
+        "| Rule | Location | Fingerprint | Reason |",
+        "|---|---|---|---|",
+        *rows,
+    ]
+
+
 def render(report: ScanReport) -> str:
     """The whole summary as one Markdown document."""
     highs = tuple(finding for finding in report.findings if finding.severity is Severity.HIGH)
-    lines = [
+    lines: list[str] = [
         "# Airlock",
         "",
         f"{count_phrase(report)} · {report.files_scanned} file(s) scanned",
@@ -129,8 +147,16 @@ def render(report: ScanReport) -> str:
         *finding_rows(highs),
         *evidence_blocks(highs),
     ]
+    if lines[-1] != "":
+        lines.append("")
     lines += [
+        "## Suppressed findings",
         "",
+        *suppressed_section(report),
+    ]
+    if lines[-1] != "":
+        lines.append("")
+    lines += [
         f"Mode `{inline(report.mode.value)}` · exit {report.exit_code}"
         f" · airlock {inline(report.tool_version)}",
     ]
