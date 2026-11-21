@@ -8,7 +8,7 @@
   },
   "findings": [
     {
-      "evidence": "eval(Buffer.from(payload, 'base64').toString())",
+      "evidence": "const res = eval(payload);",
       "fingerprint": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
       "line": 42,
       "message": "Dynamic code evaluation in configuration file",
